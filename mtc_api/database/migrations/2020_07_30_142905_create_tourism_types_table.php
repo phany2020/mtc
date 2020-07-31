@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTourismTypeTable extends Migration
+class CreateTourismTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -29,6 +29,6 @@ class CreateTourismTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tourism_type');
+        Schema::dropIfExists('tourism_types');
     }
 }

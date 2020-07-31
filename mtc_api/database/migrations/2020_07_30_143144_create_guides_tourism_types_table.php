@@ -15,8 +15,8 @@ class CreateGuidesTourismTypesTable extends Migration
     {
         Schema::create('guides_tourism_types', function (Blueprint $table) {
             $table->bigIncrements('guides_tourism_type_id');
-            $table->unsignedInteger('tourism_type_id');
-            $table->unsignedInteger('guide_id');
+            $table->unsignedBigInteger('tourism_type_id');
+            $table->unsignedBigInteger('guide_id');
             $table->timestamps();
             $table->softDeletes();
 

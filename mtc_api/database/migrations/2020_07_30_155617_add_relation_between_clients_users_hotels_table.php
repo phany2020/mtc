@@ -14,8 +14,8 @@ class AddRelationBetweenClientsUsersHotelsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('hotel_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('hotel_id');
 
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('hotel_id')->references('hotel_id')->on('hotels');

@@ -14,7 +14,7 @@ class AddRelationBetweenClientsDonationsTable extends Migration
     public function up()
     {
         Schema::table('donations', function (Blueprint $table) {
-            $table->unsignedInteger('client_id');
+            $table->unsignedBigInteger('client_id');
 
             $table->foreign('client_id')->references('client_id')->on('clients');
         });

@@ -14,7 +14,7 @@ class AddRelationBetweenReceptionnistsUsersTable extends Migration
     public function up()
     {
         Schema::table('receptionnists', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->foreign('user_id')->references('user_id')->on('users');
         });

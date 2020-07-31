@@ -15,8 +15,8 @@ class CreateClientsTourismTypesTable extends Migration
     {
         Schema::create('clients_tourism_types', function (Blueprint $table) {
             $table->bigIncrements('client_tourism_type_id');
-            $table->unsignedInteger('tourism_type_id');
-            $table->unsignedInteger('client_id');
+            $table->unsignedBigInteger('tourism_type_id');
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
             $table->softDeletes();
 

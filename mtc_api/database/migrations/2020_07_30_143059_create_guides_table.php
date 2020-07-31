@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGuideTable extends Migration
+class CreateGuidesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateGuideTable extends Migration
      */
     public function up()
     {
-        Schema::create('guide', function (Blueprint $table) {
+        Schema::create('guides', function (Blueprint $table) {
             $table->bigIncrements('guide_id');
             $table->string('name');
-            $table->enum('status', ['PRIVATE', 'COMMON'])->default('SIMPLE');
+            $table->enum('status', ['PRIVATE', 'COMMON'])->default('PRIVATE');
             $table->double('hours');
             $table->double('amount');
             $table->boolean('is_taken');
@@ -32,6 +32,6 @@ class CreateGuideTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guide');
+        Schema::dropIfExists('guides');
     }
 }
