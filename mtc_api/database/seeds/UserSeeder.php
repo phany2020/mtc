@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Setting;
+use App\User;
 
-class SettingSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,8 +12,8 @@ class SettingSeeder extends Seeder
      */
     public function run(\Faker\Generator $faker)
     {
-        factory(Setting::class, 20)->make()->each(function($setting) use ($faker) {
-            $setting->save();
+        factory(User::class, 10)->make()->each(function ($user) use ($faker) {
+            $user->save();
         });
     }
 }

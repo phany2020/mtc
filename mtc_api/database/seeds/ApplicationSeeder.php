@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Application;
 
 class ApplicationSeeder extends Seeder
 {
@@ -9,8 +10,10 @@ class ApplicationSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(\Faker\Generator $faker)
     {
-        //
+        factory(Application::class, 20)->make()->each(function($application) use ($faker) {
+            $application->save();
+        });
     }
 }

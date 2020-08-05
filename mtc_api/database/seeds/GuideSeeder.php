@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Guide;
 
 class GuideSeeder extends Seeder
 {
@@ -9,8 +10,10 @@ class GuideSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(\Faker\Generator $faker)
     {
-        //
+        factory(Guide::class, 20)->make()->each(function($guide) use ($faker) {
+            $guide->save();
+        });
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\TourismType;
 
 class TourismTypeSeeder extends Seeder
 {
@@ -9,8 +10,10 @@ class TourismTypeSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(\Faker\Generator $faker)
     {
-        //
+        factory(TourismType::class, 20)->make()->each(function($tourismtype) use ($faker) {
+            $tourismtype->save();
+        });
     }
 }

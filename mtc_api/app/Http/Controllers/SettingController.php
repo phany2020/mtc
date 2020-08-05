@@ -12,9 +12,10 @@ class SettingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = Setting::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
     /**
@@ -24,7 +25,19 @@ class SettingController extends Controller
      */
     public function create()
     {
-        //
+        $this->validate($request->all(), [
+            'key' => 'required|unique',
+            'value' => 'required',
+        ]);
+
+        $data = [];
+        $data = array_merge($data, $request->only([
+            'key',
+            'value',
+            'description']));
+            
+        $setting = Setting::create($data);
+        return response()->json($setting);
     }
 
     /**
@@ -80,6 +93,6 @@ class SettingController extends Controller
      */
     public function destroy(Setting $setting)
     {
-        //
+        
     }
 }

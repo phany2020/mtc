@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Receptionnist;
 
 class ReceptionnistSeeder extends Seeder
 {
@@ -9,8 +10,13 @@ class ReceptionnistSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(\Faker\Generator $faker)
     {
-        //
+        factory(Receptionnist::class, 20)->make()->each(function($receptionnist) use ($faker) {
+            $user = App\User::all();
+
+            $receptionnist->user_id = $faker->randomElement($user)->id;
+            $receptionnist->save();
+        });
     }
 }
