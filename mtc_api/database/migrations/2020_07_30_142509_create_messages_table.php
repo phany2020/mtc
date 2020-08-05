@@ -17,7 +17,6 @@ class CreateMessagesTable extends Migration
             $table->bigIncrements('message_id');
             $table->string('content');
             $table->unsignedBigInteger('like')->default(0);
-            $table->unsignedBigInteger('parent_id')->nullable();
             $table->date('send_at');
             $table->timestamps();
             $table->softDeletes();
