@@ -14,14 +14,14 @@ class CreateGuidesTourismTypesTable extends Migration
     public function up()
     {
         Schema::create('guides_tourism_types', function (Blueprint $table) {
-            $table->bigIncrements('guides_tourism_type_id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('tourism_type_id');
             $table->unsignedBigInteger('guide_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('tourism_type_id')->references('tourism_type_id')->on('tourism_types');
-            $table->foreign('guide_id')->references('guide_id')->on('guides');
+            $table->foreign('tourism_type_id')->references('id')->on('tourism_types')->onDelete('cascade');
+            $table->foreign('guide_id')->references('id')->on('guides')->onDelete('cascade');
         });
     }
 

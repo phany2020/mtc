@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\NewsSites;
 
 class NewsSitesSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class NewsSitesSeeder extends Seeder
             $news = App\News::all();
             $site = App\Site::all();
 
-            $news_site->news_id = $faker->randomElement($news)->id;
+            $news_site->new_id = $faker->randomElement($news)->id;
             $news_site->site_id = $faker->randomElement($site)->id;
             $news_site->save();
         });

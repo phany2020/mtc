@@ -4,17 +4,44 @@ namespace App\Http\Controllers;
 
 use App\TourismType;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class TourismTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = TourismType::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
+    }
+
+
+
+    public function find($id){
+        $tourismType = TourismType::find($id);
+        if($tourismType == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("TOURISM_TYPE_NOT_FOUND");
+            $unauthorized->setMessage("tourismType id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($tourismType);
+    }
+
+    public function destroy($id)
+    {
+        $tourismType = TourismType::find($id);
+        if($tourismType == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("HOTEL_NOT_FOUND");
+            $unauthorized->setMessage("hotel id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $tourismType->delete($tourismType);
+        return response(null);
     }
 
     /**
@@ -72,14 +99,4 @@ class TourismTypeController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\TourismType  $tourismType
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TourismType $tourismType)
-    {
-        //
-    }
 }

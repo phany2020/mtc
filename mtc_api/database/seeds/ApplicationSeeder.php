@@ -13,6 +13,9 @@ class ApplicationSeeder extends Seeder
     public function run(\Faker\Generator $faker)
     {
         factory(Application::class, 20)->make()->each(function($application) use ($faker) {
+            $client = App\Client::all();
+
+            $application->client_id = $faker->randomElement($client)->id;
             $application->save();
         });
     }

@@ -17,8 +17,8 @@ class AddRelationBetweenClientsUsersHotelsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('hotel_id');
 
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('hotel_id')->references('hotel_id')->on('hotels');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onDelete('cascade');
+            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('set null')->onDelete('cascade');
         });
     }
 

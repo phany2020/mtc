@@ -4,95 +4,109 @@ namespace App\Http\Controllers;
 
 use App\Setting;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $req)
     {
         $data = Setting::simplePaginate($req->has('limit') ? $req->limit : 15);
         return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+
+    public function find($id){
+        $setting = Setting::find($id);
+        if($setting == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("SETTINGS_NOT_FOUND");
+            $unauthorized->setMessage("settings id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($setting);
+    }
+
+
+
+   /* public function create(Request $request)
     {
         $this->validate($request->all(), [
-            'key' => 'required|unique',
-            'value' => 'required',
+            'key' => 'required | unique:settings'
         ]);
 
-        $data = [];
-        $data = array_merge($data, $request->only([
+        $data = $request->only([
             'key',
             'value',
-            'description']));
-            
+            'description'
+        ]);
+
+        $setting = new Setting();
+        $setting->key=$data['key'];
+        $setting->value=$data['value'];
+        $setting->description=$data['description'];
+        $setting->save();
+
+        return response()->json($setting);
+    }
+
+
+    */
+
+    public function create (Request $request){
+        
+        $this->validate($request->all(), [
+            'key' => 'required | unique:settings'
+        ]);
+
+        $data = $request->only([
+            'key',
+            'value',
+            'description'
+        ]);
+
         $setting = Setting::create($data);
         return response()->json($setting);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        //
+       
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
     public function show(Setting $setting)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Setting $setting)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, Setting $setting)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Setting  $setting
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Setting $setting)
+    
+    public function destroy($id)
     {
-        
+        $setting = Setting::find($id);
+        if($setting == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("SETTING_NOT_FOUND");
+            $unauthorized->setMessage("setting id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $setting->delete($setting);
+        return response(null);
     }
 }

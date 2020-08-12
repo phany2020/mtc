@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Donation::class, function (Faker $faker) {
     return [
         'nature' => $faker->randomElement(['MATERIEL', 'FINANCIER']),
-        'value' =>  $faker->money_format,
+        'value' =>  $faker->randomNumber,
     ];
 });

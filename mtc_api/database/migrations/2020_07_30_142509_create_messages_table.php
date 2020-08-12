@@ -14,7 +14,7 @@ class CreateMessagesTable extends Migration
     public function up()
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->bigIncrements('message_id');
+            $table->bigIncrements('id');
             $table->string('content');
             $table->unsignedBigInteger('like')->default(0);
             $table->date('send_at');

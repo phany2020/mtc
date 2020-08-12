@@ -3,25 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\News;
+use App\APIError;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = News::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+    public function find($id){
+        $news = News::find($id);
+        if($news == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("NEWS_NOT_FOUND");
+            $unauthorized->setMessage("news id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($news);
+    }
+
+    public function destroy($id)
+    {
+        $news = News::find($id);
+        if($news == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("NEWS_NOT_FOUND");
+            $unauthorized->setMessage("news id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $news->delete($news);
+        return response(null);
+    }
+
+
+
     public function create()
     {
         //
@@ -72,14 +96,5 @@ class NewsController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\News  $news
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(News $news)
-    {
-        //
-    }
+    
 }

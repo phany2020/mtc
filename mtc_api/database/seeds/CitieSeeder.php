@@ -13,8 +13,8 @@ class CitieSeeder extends Seeder
     public function run()
     {
         DB::table('cities')->delete();
-        DB::table('cities')->insert([
-            'name' => [
+
+        static $list = [
                 "édéa",
                 "éséka",
                 "Abong-Mbang",
@@ -348,8 +348,12 @@ class CitieSeeder extends Seeder
                 "Zhoa",
                 "Zina",
                 "Zoétélé"
-            ]   
-
-        ]);
-    }   
+        ]; 
+        
+        foreach ($list as $key) {
+            DB::table('cities')->insert([
+                'name' => $key
+            ]);
+        }
+    }
 }

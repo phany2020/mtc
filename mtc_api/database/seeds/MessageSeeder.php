@@ -13,11 +13,11 @@ class MessageSeeder extends Seeder
     public function run(\Faker\Generator $faker)
     {
         factory(Message::class, 10)->make()->each(function($message) use ($faker) {
-            $client = App\Client::all();
-            $message = App\Message::all();
+            $user = App\User::all();
+           // $message1 = App\Message::all();
 
-            $message->client_id = $faker->randomElement($client)->id;
-            $message->message_id = $faker->randomElement($message)->id;
+            $message->user_id = $faker->randomElement($user)->id;
+            //$message->parent_id = $faker->randomElement($message1)->id;
             $message->save();
         });
     }

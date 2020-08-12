@@ -14,7 +14,7 @@ class CreateGuidesTable extends Migration
     public function up()
     {
         Schema::create('guides', function (Blueprint $table) {
-            $table->bigIncrements('guide_id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->enum('status', ['PRIVATE', 'COMMON'])->default('PRIVATE');
             $table->double('hours');

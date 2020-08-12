@@ -3,83 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Application;
+use App\APIError;
 use Illuminate\Http\Request;
+use SoftDeletes;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = Application::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function destroy($id)
+    {
+        $application = Application::find($id);
+        if($application == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("APPLICATION_NOT_FOUND");
+            $unauthorized->setMessage("application id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $application->delete($application);
+        return response(null);
+    }
+
+
+    public function find($id){
+        $application = Application::find($id);
+        if($application == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("APPLICATION_NOT_FOUND");
+            $unauthorized->setMessage("settings id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($application);
+    }
+    
+    
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
+    
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Application  $application
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Application $application)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Application  $application
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Application $application)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Application  $application
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, Application $application)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Application  $application
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Application $application)
-    {
-        //
-    }
+    
 }

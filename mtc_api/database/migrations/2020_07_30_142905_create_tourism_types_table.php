@@ -14,7 +14,7 @@ class CreateTourismTypesTable extends Migration
     public function up()
     {
         Schema::create('tourism_types', function (Blueprint $table) {
-            $table->bigIncrements('tourism_type_id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();

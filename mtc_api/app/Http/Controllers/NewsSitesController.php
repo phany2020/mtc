@@ -4,24 +4,61 @@ namespace App\Http\Controllers;
 
 use App\NewsSites;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class NewsSitesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = NewsSites::select('news_sites.*', 'news_sites.id as news_sites_id', 
+        'news.title as news_title', 'news.id as new_id',
+         'sites.name as sites_name', 'sites.id as site_id')
+            ->join('news', 'news_sites.new_id', '=', 'news.id')
+            ->join('sites', 'news_sites.site_id', '=', 'sites.id')
+            ->simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function find($id, Request $req){
+
+        $newsSites = NewsSites::find($id);
+        if($newsSites == null){
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("NEWS_SITE_NOT_FOUND");
+            $unauthorized->setMessage("newsSites id not found.");
+
+            return response()->json($unauthorized, 404);
+        }
+
+        $data = NewsSites::select('news_sites.*', 'news_sites.id as news_sites_id', 
+        'news.title as news_title', 'news.id as new_id',
+         'sites.name as sites_name', 'sites.id as site_id')
+            ->join('news', 'news_sites.new_id', '=', 'news.id')
+            ->join('sites', 'news_sites.site_id', '=', 'sites.id')
+            ->where('news_sites.id', '=', $id)
+            ->simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
+    }
+
+
+    public function destroy($id)
+    {
+        $newsSites = NewsSites::find($id);
+        if($newsSites == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("NEWS_Sites_NOT_FOUND");
+            $unauthorized->setMessage("newsSites id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $newsSites->delete($newsSites);
+        return response(null);
+    }
+
+    
     public function create()
     {
         //
@@ -72,14 +109,4 @@ class NewsSitesController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\NewsSites  $newsSites
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(NewsSites $newsSites)
-    {
-        //
-    }
 }

@@ -14,14 +14,14 @@ class CreateClientsTourismTypesTable extends Migration
     public function up()
     {
         Schema::create('clients_tourism_types', function (Blueprint $table) {
-            $table->bigIncrements('client_tourism_type_id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('tourism_type_id');
             $table->unsignedBigInteger('client_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('tourism_type_id')->references('tourism_type_id')->on('tourism_types');
-            $table->foreign('client_id')->references('client_id')->on('clients');
+            $table->foreign('tourism_type_id')->references('id')->on('tourism_types')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 

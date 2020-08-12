@@ -4,24 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Guide;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class GuideController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    
+    public function index(Request $req)
     {
-        //
+        $data = Guide::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function destroy($id)
+    {
+        $guide = Guide::find($id);
+        if($guide == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("GUIDE_NOT_FOUND");
+            $unauthorized->setMessage("guide id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $guide->delete($guide);
+        return response(null);
+    }
+
+
+    public function find($id){
+        $guide = Guide::find($id);
+        if($guide == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("GUIDE_NOT_FOUND");
+            $unauthorized->setMessage("guide id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($guide);
+    }
+
+
     public function create()
     {
         //
@@ -72,14 +95,5 @@ class GuideController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Guide  $guide
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Guide $guide)
-    {
-        //
-    }
+   
 }

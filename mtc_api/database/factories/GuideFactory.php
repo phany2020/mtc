@@ -9,8 +9,8 @@ $factory->define(Guide::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'status' => $faker->randomElement(['PRIVATE', 'COMMON']),
-        'hours' =>  $faker->number_format,
-        'amount' =>  $faker->money_format,
+        'hours' =>  $faker->numberBetween(0,23),
+        'amount' =>  $faker->randomNumber,
         'is_taken' => $faker->boolean(),
     ];
 });

@@ -16,7 +16,7 @@ class AddParentIdInMessagesTable extends Migration
         Schema::table('messages', function (Blueprint $table) {
             $table->unsignedBigInteger('parent_id')->nullable();
             
-            $table->foreign('parent_id')->references('message_id')->on('messages');
+            $table->foreign('parent_id')->references('id')->on('messages')->onDelete('cascade');
         });
     }
 

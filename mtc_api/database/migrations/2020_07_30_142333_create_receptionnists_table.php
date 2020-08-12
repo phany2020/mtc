@@ -14,7 +14,7 @@ class CreateReceptionnistsTable extends Migration
     public function up()
     {
         Schema::create('receptionnists', function (Blueprint $table) {
-            $table->bigIncrements('receptionnist_id');
+            $table->bigIncrements('id');
             $table->timestamps();
             $table->softDeletes();
         });

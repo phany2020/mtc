@@ -14,7 +14,7 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->bigIncrements('client_id');
+            $table->bigIncrements('id');
             $table->timestamps();
             $table->softDeletes();
         });

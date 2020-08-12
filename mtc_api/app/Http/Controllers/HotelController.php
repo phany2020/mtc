@@ -4,24 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Hotel;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $req)
     {
-        //
+        $data = Hotel::simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+    public function find($id){
+        $hotel = Hotel::find($id);
+        if($hotel == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("HOTEL_NOT_FOUND");
+            $unauthorized->setMessage("hotel id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        return response()->json($hotel);
+    }
+
+    public function destroy($id)
+    {
+        $hotel = Hotel::find($id);
+        if($hotel == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("HOTEL_NOT_FOUND");
+            $unauthorized->setMessage("hotel id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $hotel->delete($hotel);
+        return response(null);
+    }
+
+
     public function create()
     {
         //
@@ -72,14 +95,5 @@ class HotelController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Hotel  $hotel
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Hotel $hotel)
-    {
-        //
-    }
+  
 }

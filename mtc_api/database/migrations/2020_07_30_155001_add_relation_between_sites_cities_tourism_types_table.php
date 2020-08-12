@@ -17,8 +17,8 @@ class AddRelationBetweenSitesCitiesTourismTypesTable extends Migration
             $table->unsignedBigInteger('citie_id');
             $table->unsignedBigInteger('tourism_type_id');
 
-            $table->foreign('citie_id')->references('citie_id')->on('cities');
-            $table->foreign('tourism_type_id')->references('tourism_type_id')->on('tourism_types');
+            $table->foreign('citie_id')->references('id')->on('cities')->onDelete('cascade');
+            $table->foreign('tourism_type_id')->references('id')->on('tourism_types')->onDelete('cascade');
         });
     }
 

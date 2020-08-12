@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRelationBetweenMessagesClientsTable extends Migration
+class AddRelationBetweenMessagesUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class AddRelationBetweenMessagesClientsTable extends Migration
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('user_id');
 
-            $table->foreign('client_id')->references('client_id')->on('clients');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

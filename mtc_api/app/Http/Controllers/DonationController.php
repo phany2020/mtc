@@ -4,24 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Donation;
 use Illuminate\Http\Request;
+use App\APIError;
 
 class DonationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+   
+    public function index(Request $req)
     {
-        //
+        $data = Donation::select('donations.*', 'donations.id as donation_id', 'clients.*', 'clients.id as client_id',
+        'users.name', 'users.telephone', 'users.id as user_id')
+            ->join('clients', 'donations.client_id', '=', 'clients.id')
+            ->join('users', 'clients.user_id', '=', 'users.id')
+            ->simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function find($id, Request $req){
+
+        $donation = Donation::find($id);
+        if($donation == null){
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("DONATION_NOT_FOUND");
+            $unauthorized->setMessage("donation id not found.");
+
+            return response()->json($unauthorized, 404);
+        }
+
+        $data = Donation::select('donations.*', 'donations.id as donation_id', 'clients.*', 'clients.id as client_id',
+        'users.name', 'users.telephone', 'users.id as user_id')
+            ->join('clients', 'donations.client_id', '=', 'clients.id')
+            ->join('users', 'clients.user_id', '=', 'users.id')
+            ->where('donations.id', '=', $id)
+            ->simplePaginate($req->has('limit') ? $req->limit : 15);
+        return response()->json($data);
+    }
+
+
+    public function destroy($id)
+    {
+        $donation = Donation::find($id);
+        if($donation == null) {
+            $unauthorized = new APIError;
+            $unauthorized->setStatus("404");
+            $unauthorized->setCode("DONATION_NOT_FOUND");
+            $unauthorized->setMessage("donation id not found");
+
+            return response()->json($unauthorized, 404);
+        }
+        $donation->delete($donation);
+        return response(null);
+    }
+
+   
     public function create()
     {
         //
@@ -72,14 +108,4 @@ class DonationController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Donation  $donation
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Donation $donation)
-    {
-        //
-    }
 }
