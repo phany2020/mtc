@@ -135,6 +135,15 @@ Route::group(['prefix' => 'guides_tourism_types'], function () {
 });
 
 
+/*Route::group(['prefix' => 'guides_tourism_types'], function () {
+    Route::get('/', 'GuidesTourismTypesController@index');
+    Route::post('/', 'GuidesTourismTypesController@create');
+    Route::get('/{id}', 'GuidesTourismTypesController@find');
+    Route::match(['post', 'put'], '/{id}', 'GuidesTourismTypesController@update');
+    Route::delete('/{id}', 'GuidesTourismTypesController@destroy');
+});*/
+
+
 Route::group(['prefix' => 'clients_tourism_types'], function () {
     Route::get('/', 'ClientsTourismTypesController@index');
     Route::post('/', 'ClientsTourismTypesController@create');
